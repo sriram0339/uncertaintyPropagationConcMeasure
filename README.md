@@ -4,9 +4,9 @@ Olivier Bouissou, Eric Goubault, Sylvie Putot, Aleksandar Chakarov, and Sriram S
 
 http://www.cs.colorado.edu/~srirams/papers/affine-forms-conc-measure-tacas-16.pdf
 
-== Compilation Instructions
+## Compilation Instructions
 
-=== Prerequisites
+### Prerequisites
 
 You will need the following libraries installed:
   *  MPFR: Multiprecision floating point library
