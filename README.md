@@ -1,8 +1,7 @@
 This project has the source code for the paper
 
-Olivier Bouissou, Eric Goubault, Sylvie Putot, Aleksandar Chakarov, and Sriram Sankaranarayanan, Uncertainty Propagation using Probabilistic Affine Forms and Concentration of Measure Inequalities In Tools and Algorithms for Construction and Analysis of Systems (TACAS), Volume 9636 of Lecture Notes in Computer Science pp. 225-243 (2016). 
-
-http://www.cs.colorado.edu/~srirams/papers/affine-forms-conc-measure-tacas-16.pdf
+> Olivier Bouissou, Eric Goubault, Sylvie Putot, Aleksandar Chakarov, and Sriram Sankaranarayanan, _ Uncertainty Propagation using Probabilistic Affine Forms and Concentration of Measure Inequalities_ In *Tools and Algorithms for Construction and Analysis of Systems* (TACAS), Volume 9636 of Lecture Notes in Computer Science pp. 225-243 (2016). 
+> [http://www.cs.colorado.edu/~srirams/papers/affine-forms-conc-measure-tacas-16.pdf URL]
 
 ## Compilation Instructions
 
