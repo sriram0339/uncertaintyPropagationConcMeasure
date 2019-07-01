@@ -1,0 +1,28 @@
+SRC= utilities.cpp affineArithmeticClass.cpp aaEnvironment.cpp  
+CXXFLAGS = -MMD -g -Wall -DUSE_BOOST_INTERVAL -I /usr/local/include
+CXX=g++-4.8
+LDFLAGS=  -I /usr/local/include -L /usr/local/include -g -lboost_timer -lboost_system
+
+all: filter.boost testAffine.boost fersonExample.boost eulerMaruyama.boost ssExamples.boost
+
+testAffine.boost: $(SRC:.cpp=.o) testAffine.o
+	g++  $(CXXFLAGS) -g -Wall -o $@ $^ $(LDFLAGS)
+
+filter.boost:  $(SRC:.cpp=.o) filter.o
+	g++-4.8 $(CXXFLAGS) -L/usr/local/include -g -Wall -o $@ $^ $(LDFLAGS)
+
+fersonExample.boost: $(SRC:.cpp=.o) fersonExample.o
+	g++  -g -Wall -o $@ $^ $(LDFLAGS)
+
+
+eulerMaruyama.boost: $(SRC:.cpp=.o) eulerMaruyama.o
+	g++ -g -Wall -o $@ $^ $(LDFLAGS) 
+
+ssExamples.boost: $(SRC:.cpp=.o) ssExamples.o
+	g++  -g -Wall -o $@ $^ $(LDFLAGS)
+
+clean:
+	rm -f *.o testAffine *.d filter fersonExample eulerMaruyama ssExamples
+
+-include $(SRC:.cpp=.d)
+
