@@ -9,12 +9,12 @@ http://www.cs.colorado.edu/~srirams/papers/affine-forms-conc-measure-tacas-16.pd
 === Prerequisites
 
 You will need the following libraries installed:
-	- MPFR: Multiprecision floating point library
-	- MPFI: An interval extension to MPFR
-	- BOOST
-	- BOOST TIMER
+  *  MPFR: Multiprecision floating point library
+  * MPFI: An interval extension to MPFR
+  * BOOST
+  * BOOST TIMER
 
-=== Compile
+###  Compile
 
 Simply go into the `src/` directory and run `Make`. You will need to edite `Makefile` to make sure that the compilation flags `-I` and `-L` point to the
 right paths for the installed libraries. Currently, they are configured to a MAC OSX with homebrew setup.
@@ -23,7 +23,7 @@ right paths for the installed libraries. Currently, they are configured to a MAC
 This will produce many binaries called `ssExamples`, `eulerMaruyama`,  `filter` and `fersonExample`.
 
 
-== Running various benchmarks
+##  Running various benchmarks
 
 Each of the benchmarks are described in the appendix of the paper referenced above.
 
@@ -43,6 +43,6 @@ Each of the benchmarks are described in the appendix of the paper referenced abo
 | Filter Example | `./filter` | filter.cpp |
 
 
-== Questions/Comments
+## Questions/Comments
 
 Sriram Sankaranarayanan <srirams@NAMEOFMYSTATE.EDU>
