@@ -348,10 +348,29 @@ void test3(){
   cout << aa << endl;
 }
 
+void test4(){
+  AAEnvironment aa(4);
+  // range(y) = [0.1,0.15], expectation = [0.12,0.13], variance = [0.015, 0.016]
+  i_double I1(-0.5, 0.5), I2(0.0), I3(0.2,0.2);
+  std::cout << I1 << std::endl;
+  int y = aa.makeFreshVariable(I1, I2, I3);
+  AffineArithmeticClass x(aa);
+  x.setConstant(i_double(1.5,1.5));
+  x.setCoefficient(y, i_double(1.0,1.0));
+  cout << "x = " << x << endl;
+  cout << x.range() << endl; 
+  AffineArithmeticClass z(aa);
+  z.power_assign(x,7);
+  cout << "(x)^7 = " << z << "range:" << z.range() << endl;
+  cout << aa << std::endl;
+  return;
+}
+
 int main( ) {
   //test1();
   test2();
-   monteCarloSineCosineTest2();
+  monteCarloSineCosineTest2();
+  test4();
   // testRoboticsExample();
   //  test3();
 }

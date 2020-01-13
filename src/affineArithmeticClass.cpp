@@ -216,7 +216,12 @@ void AffineArithmeticClass::multiply_assign(AffineArithmeticClass const & op2){
 		}
 	      }
 	    }
-	    newMap[k] = nVal;
+	    interval_map::const_iterator vk = newMap.find(k);
+	    if (vk == newMap.end()){
+	      newMap[k] = nVal;
+	    } else {
+	      newMap[k] = vk -> second + nVal;
+	    }
 	  }
 	
 	}
@@ -243,16 +248,22 @@ void AffineArithmeticClass::square_assign() {
       }
     }
   }
+  
   // Now compute the nonlinear terms
   BOOST_FOREACH(interval_map::value_type & p, m){
     int k1 = p.first;
     i_double v1= p.second;
-    
+    interval_map::const_iterator vk;
     if (k1 != constant_idx){
       /* -- Take care of the square term --*/
       int sqTerm = env.makeFreshProductVariable(k1,k1);
       i_double sqVal = square(v1);
-      newMap[sqTerm] = sqVal;
+      vk = newMap.find(sqTerm);
+      if (vk == newMap.end()){
+	newMap[sqTerm] = sqVal;
+      } else {
+	newMap[sqTerm] = vk -> second + sqVal;
+      }
       /* -- Done -- */
       
       BOOST_FOREACH(interval_map::value_type & q, m){
@@ -262,7 +273,12 @@ void AffineArithmeticClass::square_assign() {
 	  int nkey = env.makeFreshProductVariable(k1, k2);
 	  i_double nVal =  v2 * v1;
 	  nVal = i_double(2.0) * nVal;
-	  newMap[nkey] = nVal;
+	  vk = newMap.find(nkey);
+	  if (vk == newMap.end()){
+	    newMap[nkey] = nVal;
+	  } else {
+	    newMap[nkey] = vk -> second + nVal;
+	  }
 	}
       }
     }
@@ -285,6 +301,7 @@ i_double AffineArithmeticClass::range() const{
   }
   return retI;
 }
+
 
 i_double AffineArithmeticClass::expectation() const{
   i_double retI(0.0);
@@ -323,24 +340,42 @@ void AffineArithmeticClass::taylorFirstOrderFormAssign(AffineArithmeticClass con
   
 void AffineArithmeticClass::power_assign(AffineArithmeticClass const & op, int n){
   // (c+h)^n = c^n + n h (c^{n-1}) + freshVar( range(1/2 * h^2 * n *(n-1)* R^{n-2}))
-  BOOST_ASSERT( n >= 2);
-  set<int> dependencies;
-  op. collectRelevantNoiseSymbols(dependencies);
-  i_double I = op.range();
-  i_double c ( median(I) );
+  BOOST_ASSERT(n >= 2);
+  if (n > 8) {
+    set<int> dependencies;
+    op. collectRelevantNoiseSymbols(dependencies);
+    i_double I = op.range();
+    i_double c ( median(I) );
 
-  i_double deriv0 = pow(c,n);
-  i_double deriv1 = i_double(n) * pow(c,n-1);
-  i_double deriv2 = i_double(n*(n-1))* pow(I, n-2);
+    i_double deriv0 = pow(c,n);
+    i_double deriv1 = i_double(n) * pow(c,n-1);
+    i_double deriv2 = i_double(n*(n-1))* pow(I, n-2);
 
   
-  // Make a copy of the operand
-  AffineArithmeticClass h(op);
-  // Subtract c from that copy
-  i_double c0 = op.getConstant();
-  h.setConstant(c0 - c);
+    // Make a copy of the operand
+    AffineArithmeticClass h(op);
+    // Subtract c from that copy
+    i_double c0 = op.getConstant();
+    h.setConstant(c0 - c);
 
-  taylorFirstOrderFormAssign(h, deriv0, deriv1 ,deriv2,dependencies);
+    taylorFirstOrderFormAssign(h, deriv0, deriv1 ,deriv2,dependencies);
+  } else {
+    clear();
+    this -> setConstant(1.0);
+    AffineArithmeticClass tmp(op);
+    while (n > 0){
+      if (n%2 == 1){
+	this -> multiply_assign(tmp);
+      }
+      n = n/2;
+      if ( n > 0){
+	tmp.square_assign();
+      }
+      std::cout << "n=" << n << "this = " << *this << " tmp =  " << tmp << std::endl;
+      
+    }
+  }  
+  
 }
 
 
